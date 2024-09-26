@@ -4,12 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Marca;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class MarcaController extends Controller
 {
-    public function index()
+    public function index(): Collection
     {
-        //
+        /**
+         * Retornandos todos os registros de marca e retornando uma collection.
+         * Fazendo requisição com verbo GET, pois é o verbo da index.
+         */
+        return Marca::all();
     }
 
     public function create()
@@ -17,7 +22,7 @@ class MarcaController extends Controller
         //
     }
 
-    public function store(Request $request)
+    public function store(Request $request): Marca
     {
         /**
          * As requisições estão sendo realizadas via Postman é um aplicativo feito para ver o funcionamento da API Rest
@@ -30,9 +35,12 @@ class MarcaController extends Controller
         return $marca; //Laravel entende que o objeto retornado deve ser 'application/json' mesmo a gente não convertendo ele manualmente.
     }
 
-    public function show(Marca $marca)
+    public function show(Marca $marca): Marca
     {
-        //
+        /**
+         * Fazendo solicitação get com parametro 'id' para obter o dado do objeto Marca correspondente.
+         */
+        return $marca;
     }
 
     public function edit(Marca $marca)
