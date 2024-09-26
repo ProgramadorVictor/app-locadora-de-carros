@@ -17,11 +17,6 @@ class MarcaController extends Controller
         return Marca::all();
     }
 
-    public function create()
-    {
-        //
-    }
-
     public function store(Request $request): Marca
     {
         /**
@@ -43,18 +38,29 @@ class MarcaController extends Controller
         return $marca;
     }
 
-    public function edit(Marca $marca)
+    public function update(Request $request, Marca $marca): Marca
     {
-        //
-    }
-
-    public function update(Request $request, Marca $marca)
-    {
-        //
+        /**
+         * Atualizando os dados com put e patch.
+         * Put sendo utilizado para atualizar mais de 1 dado.
+         * Patch sendo utilizado apenas para atualizar 1 dado. (soft)
+         */
+        $marca = tap($marca)->update([
+            'nome' => $request->input('nome'),
+            'imagem' => $request->input('imagem')
+        ]);
+        return $marca;
     }
 
     public function destroy(Marca $marca)
     {
-        //
+        $marca->delete();
+        return [
+            'mensagem' => 'A marca foi removida com sucesso!'
+        ];
     }
+    /**
+     * Desta forma implementamos um web service, API OBSERVE REST fazendo operações CRUD no Model Marca.
+     * Respeitando os padrões estruturados do API REST com os Verbos HTTPS.
+     */
 }
