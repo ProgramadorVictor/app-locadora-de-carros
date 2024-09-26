@@ -13,22 +13,12 @@ class ClienteController extends Controller
         //
     }
 
-    public function create()
-    {
-        //
-    }
-
     public function store(StoreClienteRequest $request)
     {
         //
     }
 
     public function show(Cliente $cliente)
-    {
-        //
-    }
-
-    public function edit(Cliente $cliente)
     {
         //
     }
