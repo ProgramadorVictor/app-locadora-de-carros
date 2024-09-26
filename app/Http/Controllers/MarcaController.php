@@ -30,30 +30,46 @@ class MarcaController extends Controller
         return $marca; //Laravel entende que o objeto retornado deve ser 'application/json' mesmo a gente não convertendo ele manualmente.
     }
 
-    public function show(Marca $marca): Marca
+    // public function show(Marca $marca): Marca //Com essa tipagem retornar um Throw Exception
+    public function show($id) //Tirando o type hinting de show()
     {
         /**
          * Fazendo solicitação get com parametro 'id' para obter o dado do objeto Marca correspondente.
          */
+        $marca = Marca::find($id);
+        if($marca === null){ // '===' Identico precisa ser do mesmo tipo e do mesmo valor
+            return ['error' => 'O recurso nao foi encontrado']; //Retornando o array que vai ser convertido em json posteriormente pelo Laravel
+        }
         return $marca;
     }
 
-    public function update(Request $request, Marca $marca): Marca
+    // public function update(Request $request, Marca $marca): Marca
+    public function update(Request $request, $id) //Tirando o type hinting de update()
     {
         /**
          * Atualizando os dados com put e patch.
          * Put sendo utilizado para atualizar mais de 1 dado.
          * Patch sendo utilizado apenas para atualizar 1 dado. (soft)
          */
-        $marca = tap($marca)->update([
-            'nome' => $request->input('nome'),
-            'imagem' => $request->input('imagem')
-        ]);
-        return $marca;
+        if(Marca::find($id) === null){
+            $marca = Marca::find($id);
+            $marca = tap($marca)->update([
+                'nome' => $request->input('nome'),
+                'imagem' => $request->input('imagem')
+            ]);
+            return $marca;
+        }
+        return ['error' => 'O recurso nao foi encontrado']; //Retornando o array que vai ser convertido em json posteriormente pelo Laravel
     }
 
-    public function destroy(Marca $marca)
+    public function destroy($id)
     {
+        $marca = Marca::find($id);
+        if($marca === null){
+            return [
+                'error' => 'O recurso nao foi encontrado!'
+            ];
+        }
         $marca->delete();
         return [
             'mensagem' => 'A marca foi removida com sucesso!'

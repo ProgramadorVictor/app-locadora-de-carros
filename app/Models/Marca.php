@@ -9,4 +9,5 @@ class Marca extends Model
 {
     use HasFactory;
     protected $fillable = ['nome', 'imagem'];
+    protected $hidden = ['created_at', 'updated_at']; //Util para esconder informações na resposta do json.
 }
