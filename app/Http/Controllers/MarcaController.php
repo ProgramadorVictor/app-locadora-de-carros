@@ -23,9 +23,20 @@ class MarcaController extends Controller
         /**
          * As requisições estão sendo realizadas via Postman é um aplicativo feito para ver o funcionamento da API Rest
          */
-        $marca = tap(new Marca(), function(Marca $marca) use ($request) {
-            $marca->nome = $request->input('nome');
-            $marca->imagem = $request->input('imagem');
+        $regras = [
+            'nome' => 'required|unique:marcas',
+            'imagem' => 'required'
+        ];
+        $feedback = [
+            'required' => 'O campo :attribute é obrigatório',
+            'unique' => 'O :attribute ja existe no banco de dados'
+        ];
+        $validated = $request->validate($regras, $feedback);
+        //Stateless é um problema que ocorre na requisição dos dados errados. quando uma aplicação é stateless, isso significa que cada requisição é independente, e o servidor não mantém informações sobre o estado anterior do usuário.
+        //Para resolvemos o problema precisamos indicar no cabeçalho do lado do cliente o atributo 'Accept' que indica que o lado do cliente sabe resolver esse problema de redirecionamento do retorno json.
+        $marca = tap(new Marca(), function(Marca $marca) use ($validated) {
+            $marca->nome = $validated['nome'];
+            $marca->imagem =$validated['imagem'];
             $marca->save();
         });
         return response()->json($marca,201); //Laravel entende que o objeto retornado deve ser 'application/json' mesmo a gente não convertendo ele manualmente.
