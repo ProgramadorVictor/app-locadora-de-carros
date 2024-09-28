@@ -9,6 +9,15 @@ use Illuminate\Http\JsonResponse;
 
 class MarcaController extends Controller
 {
+    public function __construct(Marca $marca){
+        $this->marca = $marca;
+        /**
+         * Acima, estamos fazendo uma validação dinamica no Laravel, diretamente no próprio Model, muito interessante.
+         * Pois ao utilizar desta prática os dados ficam dinamicos, ao adicionar nova tabela e esquecer de adicionar não da problema em produção
+         * A questão é que se os dados que foram enviados, podem passar sem validação para o banco de dados, uma faca de dois gumes. É bom em uns aspectos e ruim em outros.
+         *  '$validated = $request->validate($this->marca->rules(), $this->marca->messages());'
+         */
+    }
     /**
      * Essas especificações abaixo, como os parametros a ser recebido Request $request, Marca $marca
      * Os tipos de retorno esperado como Json, Collection, JsonResponse, Marca. São Type Hints
@@ -30,15 +39,8 @@ class MarcaController extends Controller
         /**
          * As requisições estão sendo realizadas via Postman é um aplicativo feito para ver o funcionamento da API Rest
          */
-        $regras = [
-            'nome' => 'required|unique:marcas',
-            'imagem' => 'required'
-        ];
-        $feedback = [
-            'required' => 'O campo :attribute é obrigatório',
-            'unique' => 'O :attribute ja existe no banco de dados'
-        ];
-        $validated = $request->validate($regras, $feedback);
+
+        $validated = $request->validate($this->marca->rules(), $this->marca->messages()); //A propria validação do Laravel ja retornar o status code correto e enviar um json com as mensagens. OBS: Deve ter no cabeçalho da requisição o 'Accept' que indica que o client aceita receber dados do tipo 'application/json'.
         //Quando uma aplicação é stateless (sem estado), isso significa que cada requisição é independente, e o servidor não mantém informações sobre o estado anterior do usuário. Pode ocorrer um problema quando a requisição API estiver com os dados errados redirecionado o usuario para uma pagina errada.
         //Para resolvemos o problema precisamos indicar no cabeçalho do lado do cliente o atributo 'Accept' que indica que o lado do cliente sabe resolver esse problema de redirecionamento do retorno json.
         $marca = tap(new Marca(), function(Marca $marca) use ($validated) {
