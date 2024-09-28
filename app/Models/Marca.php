@@ -26,7 +26,8 @@ class Marca extends Model
              */
             'nome' => 'required|unique:marcas,nome,'.$this->id.'|min:3', //Isso funciona somente quando o dado tem uma instancia. Por exemplo com __construct recuperando e passado a isntancia para Model Marca
             // 'nome' => 'required|unique:marcas,nome,id|min:3',
-            'imagem' => 'required'
+            'imagem' => 'required|file|mimes:png,jpeg,jpg' //Tratativas para imagem, pode ser usado o 'image' que é uma trativa do Laravel que ja tem imagens
+            //Acima o mimes: indica quais '.extensao' podem ser, podemos colocar outras também.
         ];
     }
     // Pode ser feito da maneira abaixo passando uma instancia para rules()
@@ -35,7 +36,8 @@ class Marca extends Model
         return [
             'required' => 'O campo :attribute é obrigatório',
             'unique' => 'O :attribute ja existe no banco de dados',
-            'min' => 'O :attribute deve ter no minimo 3 caracteres'
+            'min' => 'O :attribute deve ter no minimo 3 caracteres',
+            'mimes' => 'A :attribute deve ser uma imagem do tipo png,jpeg,jpg.'
         ];
     }
 }

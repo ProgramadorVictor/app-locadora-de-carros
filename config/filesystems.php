@@ -13,7 +13,12 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    'default' => env('FILESYSTEM_DRIVER', 'local'), //Deve ser configurado para salvamento de arquivos,
+    /**
+     * Caso o salvemento seja dessa forma storage('imagem'), ele automaticamente salvará no driver 'default' que indica o local
+     * De outra forma podemos alterar o default para outro valor padrão de modo que ao digitamos salvamos no local default.
+     * Se salvamos storage('imagem', 'valor'), vamos salvar em outro local mesmo que o valor default seja padrão.
+     */
 
     /*
     |--------------------------------------------------------------------------

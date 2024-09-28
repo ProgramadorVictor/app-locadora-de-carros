@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
+//Este arquivo aqui é usado para processar solicitações HTTP, é o ponto de entrada, para acessar paginas e receber respostas.
+
 /*
 |--------------------------------------------------------------------------
 | Check If Application Is Under Maintenance
