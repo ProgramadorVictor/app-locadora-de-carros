@@ -81,6 +81,19 @@ class MarcaController extends Controller
         if($marca === null){
             return response()->json(['error' => 'O recurso nao foi encontrado'], 404); //Retornando o array que vai ser convertido em json posteriormente pelo Laravel
         }
+
+        if($request->method() === 'PATCH'){ //method() recupera o metodo do request isMethod('PATCH') verifica se o método é patch
+            $rules_patch = []; 
+            foreach($marca->rules() as $rule => $valor){
+                if(array_key_exists($rule, $request->input())){ //Recupera os dados do request == $request->all();
+                    $rules_patch[$rule] = $valor;
+                }
+            }
+            $validated = $request->validate($rules_patch, Marca::messages());
+            $marca = tap($marca)->update($validated);
+            return response()->json($marca, 200);
+        }
+
         $validated = $request->validate($marca->rules(), Marca::messages());
         $marca = tap($marca)->update([
             'nome' => $validated['nome'],
