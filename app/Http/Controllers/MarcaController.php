@@ -39,8 +39,8 @@ class MarcaController extends Controller
          * As requisições estão sendo realizadas via Postman é um aplicativo feito para ver o funcionamento da API Rest
          */
         // $validated = $request->validate($this->marca->rules(), $this->marca->messages()); //A propria validação do Laravel ja retornar o status code correto e enviar um json com as mensagens. OBS: Deve ter no cabeçalho da requisição o 'Accept' que indica que o client aceita receber dados do tipo 'application/json'.
-        
-        $validated = $request->validate(Marca::rules(), Marca::messages()); //Esta forma é interessante de fazer, também podemos usar o FormRequest
+        $marca = new Marca();
+        $validated = $request->validate($marca->rules(), Marca::messages()); //Esta forma é interessante de fazer, também podemos usar o FormRequest
         
         //Quando uma aplicação é stateless (sem estado), isso significa que cada requisição é independente, e o servidor não mantém informações sobre o estado anterior do usuário. Pode ocorrer um problema quando a requisição API estiver com os dados errados redirecionado o usuario para uma pagina errada.
         //Para resolvemos o problema precisamos indicar no cabeçalho do lado do cliente o atributo 'Accept' que indica que o lado do cliente sabe resolver esse problema de redirecionamento do retorno json.
@@ -81,9 +81,10 @@ class MarcaController extends Controller
         if($marca === null){
             return response()->json(['error' => 'O recurso nao foi encontrado'], 404); //Retornando o array que vai ser convertido em json posteriormente pelo Laravel
         }
+        $validated = $request->validate($marca->rules(), Marca::messages());
         $marca = tap($marca)->update([
-            'nome' => $request->input('nome'),
-            'imagem' => $request->input('imagem')
+            'nome' => $validated['nome'],
+            'imagem' => $validated['imagem']
         ]);
         return response()->json($marca, 200);
     }
