@@ -9,6 +9,13 @@ use Illuminate\Http\JsonResponse;
 
 class MarcaController extends Controller
 {
+    /**
+     * Essas especificações abaixo, como os parametros a ser recebido Request $request, Marca $marca
+     * Os tipos de retorno esperado como Json, Collection, JsonResponse, Marca. São Type Hints
+     * Eles tipam o dado que vai ser recebido e/ou o que vai ser retornado, caso os dados sejam diferente possivelmente pode ocorrer erros
+     * @return \Illuminate\Support\Collection
+     * Esse documento ou tipo de comentário se chama 'DocBlock' bem útil, em várias contem ele.
+     */
     public function index(): Collection
     {
         /**
@@ -32,7 +39,7 @@ class MarcaController extends Controller
             'unique' => 'O :attribute ja existe no banco de dados'
         ];
         $validated = $request->validate($regras, $feedback);
-        //Stateless é um problema que ocorre na requisição dos dados errados. quando uma aplicação é stateless, isso significa que cada requisição é independente, e o servidor não mantém informações sobre o estado anterior do usuário.
+        //Quando uma aplicação é stateless (sem estado), isso significa que cada requisição é independente, e o servidor não mantém informações sobre o estado anterior do usuário. Pode ocorrer um problema quando a requisição API estiver com os dados errados redirecionado o usuario para uma pagina errada.
         //Para resolvemos o problema precisamos indicar no cabeçalho do lado do cliente o atributo 'Accept' que indica que o lado do cliente sabe resolver esse problema de redirecionamento do retorno json.
         $marca = tap(new Marca(), function(Marca $marca) use ($validated) {
             $marca->nome = $validated['nome'];

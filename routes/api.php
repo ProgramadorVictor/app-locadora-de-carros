@@ -32,3 +32,22 @@ Route::apiResource('/carro', CarroController::class);
 Route::apiResource('/locacao', LocacaoController::class);
 Route::apiResource('/marca', MarcaController::class);
 Route::apiResource('/modelo', ModeloController::class);
+/**
+ * Um detalhe importante!: Ao solicitar a requisição API, deve ter os códigos HTTP que corresponde ao status HTTP, é mais semantico
+ * Requisições realizadas que retornam algum tipo de problema ao esta faltando dado, lado do cliente deve ter no cabeçalho da Requisição API, o atributo 'Accept' com o value da solicitação do tipo de arquivo. Ex: application/json
+ * Pois se não haver, o lado do servidor acaba direcionando para a pagina errada, no Laravel estava direcionando para a pagina padrão '/'. Ao usar 'Accept' no cabeçalho, isso indica que o lado do cliente sabe como lidar com o problema da requisição.
+ */
+/**
+ * API: Interface de Programação de Aplicação ou Application Programming Interface.
+ * API é a comunicação entre aplicações de modo que ocorre solicitações recebendo chamadas API.
+ * Podem ocorre trocas de funcionalidaes ou informações.
+ * Stateless (Sem estado): Aplicações que não mantem informações sobre o usuario, assim cada requisição sendo de forma independente. Ex: Clima atual, Conversão de Dinheiro.
+ * Para mais segurança ao usar 'Stateless', utilize um JWT - JSON Web Tokens para proteger dados com o uso de tokens, a cada requisição.
+ * Stateful (Com estado): Aplicações que mantem informações sobre o usuario (necessário autenticação), assim cada requisição sendo guardada, oferecer UX ao usuario. Ex: Favoritos, Dados do suario, Lista de tarefas.
+ * Para mais segurança ao usar 'Stateful', garanta a segurança contra CSRF (Cross Site Request Forgery).
+ * API REST (Representational State Transfer): Somente protocolos HTTP, suporta varios formatos como: JSON, XML, HTML... Comumente é usado com aplicações 'stateless', suporte a cache e mais simples de usar, depende de HTTPS para segurança.
+ * API SOAP (Simple Object Access Protocol): Utiliza varios protocolos como HTTP, SMTP, TCP. Suporta apenas um formato XML, Comumente é usado com aplicações 'stateful', mais complexo e utiliza WS-Security para segurança. Utiliza WSDL usado para descrever a solicitação, quais serviços vao ser acessados
+ * AVISO: API REST E SOAP, ambas podem ser usadas para ao contrário do seu uso comum, estado ou sem estado. Porém não é recomendável.
+ * AVISO: APIs podem ter versionamento sendo usado para identificar qual versão de API estamos usando podemos especificar na urn /api/v1/data
+ * Endpoint API: É o toda URI que solicitamos uma requisição API 'http://127.0.0.1:8000/api/marca/1'. Isso indica a URI = URL + URN
+ */
