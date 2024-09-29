@@ -95,6 +95,10 @@ class MarcaController extends Controller
     // public function update(Request $request, Marca $marca): Marca
     public function update(Request $request, $id) //Tirando o type hinting de update()
     {
+        //OBS: Ocorreu um bug no proprio Laravel, pelos foruns esse bug existe até hoje, a solução deles é enviar como post e validar se é patch ou put
+        //Esse bug é que no envio do contexto de 'form-data' os dados não chegam via 'put' ou 'patch'. Literalmente isso abaixo parou de funcionar do nada.
+        //Ou mandamos uam requisição 'POST' com no body '_method' = 'PATCH' ou 'PUT'.
+
         /**
          * Atualizando os dados com put e patch.
          * Put sendo utilizado para atualizar mais de 1 dado.
@@ -106,18 +110,26 @@ class MarcaController extends Controller
         }
 
         if($request->method() === 'PATCH'){ //method() recupera o metodo do request isMethod('PATCH') verifica se o método é patch
-            $rules_patch = []; 
+            $rules_patch = [];
             foreach($marca->rules() as $rule => $valor){
-                if(array_key_exists($rule, $request->input())){ //Recupera os dados do request == $request->all();
+                if(array_key_exists($rule, $request->all())){ //$request->input() não reconhece arquivos diferente de campo de texto, como 'file'
                     $rules_patch[$rule] = $valor;
                 }
             }
             $validated = $request->validate($rules_patch, Marca::messages());
-            $marca = tap($marca)->update($validated);
+
+            $nome = $validated['nome'] ?? $marca->nome;
+            $imagem = isset($validated['imagem']) ? $validated['imagem']->store('imagens','public') : $marca->imagem;
+
+            $marca = tap($marca)->update([
+                'nome' => $nome,
+                'imagem' => $imagem
+            ]);
+
             return response()->json($marca, 200);
         }
-
         $validated = $request->validate($marca->rules(), Marca::messages());
+        $validated['imagem'] = $validated['imagem']->store('imagens','public');
         $marca = tap($marca)->update([
             'nome' => $validated['nome'],
             'imagem' => $validated['imagem']
