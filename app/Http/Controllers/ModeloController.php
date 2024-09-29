@@ -10,7 +10,11 @@ class ModeloController extends Controller
 {
     public function index()
     {
-        return response()->json(Modelo::all(), 200);
+        return response()->json(Modelo::with('marca')->get(), 200);
+        /**
+         * all() = traz uma collection.
+         * get() = voce preparar uma query para trazer uma collection.
+         */
     }
 
     public function store(Request $request)
@@ -36,7 +40,7 @@ class ModeloController extends Controller
 
     public function show(int $id)
     {
-        $modelo = Modelo::find($id)->with('marca')->get();
+        $modelo = Modelo::with('marca')->find($id);
         if($modelo === null){
             return response()->json(['error' => 'O recurso nao foi encontrado'], 404);
         }

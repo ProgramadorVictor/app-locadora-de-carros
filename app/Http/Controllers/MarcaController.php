@@ -30,7 +30,7 @@ class MarcaController extends Controller
          * Retornandos todos os registros de marca e retornando uma collection.
          * Fazendo requisição com verbo GET, pois é o verbo da index.
          */
-        return response()->json(Marca::all(), 200); //HTTP 200
+        return response()->json(Marca::with('modelos')->get(), 200); //HTTP 200
     }
 
     public function store(Request $request): JsonResponse
@@ -80,7 +80,7 @@ class MarcaController extends Controller
         /**
          * Fazendo solicitação get com parametro 'id' para obter o dado do objeto Marca correspondente.
          */
-        $marca = Marca::find($id);
+        $marca = Marca::with('modelos')->find($id);
         if($marca === null){ // '===' Identico precisa ser do mesmo tipo e do mesmo valor
             /**
              * Retornando uma resposta com response, indicando que a resposta é um objeto json.
