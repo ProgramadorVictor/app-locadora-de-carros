@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Marca;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,16 +21,16 @@ class MarcaController extends Controller
      * Essas especificações abaixo, como os parametros a ser recebido Request $request, Marca $marca
      * Os tipos de retorno esperado como Json, Collection, JsonResponse, Marca. São Type Hints
      * Eles tipam o dado que vai ser recebido e/ou o que vai ser retornado, caso os dados sejam diferente possivelmente pode ocorrer erros
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Http\JsonResponse;
      * Esse documento ou tipo de comentário se chama 'DocBlock' bem útil, em várias contem ele.
      */
-    public function index(): Collection
+    public function index(): JsonResponse
     {
         /**
          * Retornandos todos os registros de marca e retornando uma collection.
          * Fazendo requisição com verbo GET, pois é o verbo da index.
          */
-        return Marca::all(); //HTTP 200
+        return response()->json(Marca::all(), 200); //HTTP 200
     }
 
     public function store(Request $request): JsonResponse
@@ -153,7 +152,8 @@ class MarcaController extends Controller
 
         Storage::disk('public')->delete($marca->imagem);
 
-        $marca->delete();
+        $marca->modelos()->delete() && $marca->delete(); //Apagando os dados do relacionamento, quando apagar a marca especifica.
+
         return response()->json(['mensagem' => 'A marca foi removida com sucesso!'], 200);
     }
     /**

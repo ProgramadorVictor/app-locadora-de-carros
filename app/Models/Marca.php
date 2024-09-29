@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Marca extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $fillable = ['nome', 'imagem'];
     protected $hidden = ['created_at', 'updated_at']; //Util para esconder informações na resposta do json.
     /**
@@ -39,5 +40,8 @@ class Marca extends Model
             'min' => 'O :attribute deve ter no minimo 3 caracteres',
             'mimes' => 'A :attribute deve ser uma imagem do tipo png,jpeg,jpg.'
         ];
+    }
+    public function modelos(){
+        return $this->hasMany(Modelo::class);
     }
 }
