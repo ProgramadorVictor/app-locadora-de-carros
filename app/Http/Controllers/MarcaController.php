@@ -121,6 +121,10 @@ class MarcaController extends Controller
             $nome = $validated['nome'] ?? $marca->nome;
             $imagem = isset($validated['imagem']) ? $validated['imagem']->store('imagens','public') : $marca->imagem;
 
+            if($imagem != $marca->imagem){ //Apagando a imagem anterior verificado se houver uma alteração.
+                Storage::disk('public')->delete($marca->imagem);
+            }
+
             $marca = tap($marca)->update([
                 'nome' => $nome,
                 'imagem' => $imagem
@@ -130,6 +134,9 @@ class MarcaController extends Controller
         }
         $validated = $request->validate($marca->rules(), Marca::messages());
         $validated['imagem'] = $validated['imagem']->store('imagens','public');
+
+        Storage::disk('public')->delete($marca->imagem);
+
         $marca = tap($marca)->update([
             'nome' => $validated['nome'],
             'imagem' => $validated['imagem']
@@ -143,6 +150,9 @@ class MarcaController extends Controller
         if($marca === null){
             return response()->json(['error' => 'O recurso nao foi encontrado!'], 404);
         }
+
+        Storage::disk('public')->delete($marca->imagem);
+
         $marca->delete();
         return response()->json(['mensagem' => 'A marca foi removida com sucesso!'], 200);
     }
