@@ -64,6 +64,6 @@ Route::prefix('v1')->middleware('jwt')->group(function(){ //Fazendo o versioname
  * composer require tymon/jwt-auth -- Instalando o JWT Token
  */
 Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout']);
-Route::post('refresh', [AuthController::class, 'refresh']);
-Route::post('me', [AuthController::class, 'me']);
+Route::post('logout', [AuthController::class, 'logout'])->middleware('jwt');
+Route::post('refresh', [AuthController::class, 'refresh'])->middleware('jwt');
+Route::post('me', [AuthController::class, 'me'])->middleware('jwt'); //Recuperando o usuario que é vinculado ao token.
