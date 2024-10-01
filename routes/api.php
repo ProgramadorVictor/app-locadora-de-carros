@@ -58,4 +58,5 @@ Route::apiResource('/modelo', ModeloController::class);
  * Podemos deixar mais seguro, limitando o tempo do token ou um limite de requisições com este token. De modo que o 'Bearer' irá ter que fazer a autenticação para obter outro token.
  * Os clientes que tem o token são chamados de 'Bearer'
  * O JWT é formado por 3 partes: Header, Payload, Signature.
+ * composer require tymon/jwt-auth -- Instalando o JWT Token
  */
