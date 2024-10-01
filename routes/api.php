@@ -51,3 +51,11 @@ Route::apiResource('/modelo', ModeloController::class);
  * AVISO: APIs podem ter versionamento sendo usado para identificar qual versão de API estamos usando podemos especificar na urn /api/v1/data
  * Endpoint API: É o toda URI que solicitamos uma requisição API 'http://127.0.0.1:8000/api/marca/1'. Isso indica a URI = URL + URN
  */
+/**
+ * Para usar uma API Web Service REST, no qual é uma API 'stateless' para uma forma de segurança de acesso aos dados podemos implementar o JWT Json Web Token.
+ * Autenticamos um usuario na primeira requisição, ao realizar a autenticação, geramos um token de autorização e retornamos o token para o 'Bearer' de modo que ele utilize este token para requisições futuras.
+ * Autenticação é diferente de Autorização
+ * Podemos deixar mais seguro, limitando o tempo do token ou um limite de requisições com este token. De modo que o 'Bearer' irá ter que fazer a autenticação para obter outro token.
+ * Os clientes que tem o token são chamados de 'Bearer'
+ * O JWT é formado por 3 partes: Header, Payload, Signature.
+ */
