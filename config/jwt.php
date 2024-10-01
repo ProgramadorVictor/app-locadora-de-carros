@@ -101,7 +101,7 @@ return [
     |
     */
 
-    'ttl' => env('JWT_TTL', 60),
+    'ttl' => env('JWT_TTL', 60), //Aqui definimos o tempo limite do token em minutos, estou modificando ela na .env
 
     /*
     |--------------------------------------------------------------------------
