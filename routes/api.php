@@ -68,7 +68,7 @@ Route::post('logout', [AuthController::class, 'logout'])->middleware('jwt');
 Route::post('refresh', [AuthController::class, 'refresh'])->middleware('jwt');
 Route::post('me', [AuthController::class, 'me'])->middleware('jwt'); //Recuperando o usuario que é vinculado ao token.
 
-/**
+/*
  * 1. eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.
  * 2. eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2xvZ2luIiwiaWF0IjoxNzI3ODEzMDgwLCJleHAiOjE3Mjc4MTY2ODAsIm5iZiI6MTcyNzgxMzA4MCwianRpIjoia0Ztam82dk9MMUZvSU5WcCIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.
  * 3. 6AKGh-7D7cZHGJpwQ0sb6pleWBy9bFka8qpl-gtgcd4
@@ -79,4 +79,4 @@ Route::post('me', [AuthController::class, 'me'])->middleware('jwt'); //Recuperan
  * Signature: É composto por header e payload e criptogrado além de ter uma chave criptograda, que é a chave exclusiva que faz referencia ao JWT_SECRET na .env, é como se fosse o Hash::make() do Laravel com APP_KEY
  *
  * Importante: O token usa o algoritmo de Base64Url, que são usados para criptografar e descriptografar, ou seja não coloque informações sensiveis..
- * /
+ */

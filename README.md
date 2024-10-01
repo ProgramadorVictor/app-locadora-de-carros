@@ -8,5 +8,6 @@ Projeto realizado com o Professor Jorge Sant Ana na Udemy, no curso **Desenvolvi
 ## Tecnologias Utilizadas
 
 - **Backend**: PHP, Laravel
+- **Frontend**: Vue.js
 - **Banco de Dados**: MySQL
-- **Outras Ferramentas**: Composer
+- **Outras Ferramentas**: Composer, NPM
