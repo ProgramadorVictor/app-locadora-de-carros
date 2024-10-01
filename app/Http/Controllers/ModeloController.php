@@ -3,13 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Models\Modelo;
+use App\Repositories\ModeloRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ModeloController extends Controller
 {
+    protected $modelo;
+    public function __construct(Modelo $modelo){
+        $this->modelo = $modelo;
+    }
     public function index(Request $request)
     {//Aidiconando filtros na consultas dos modelos e manipulando a resposta json
+        $modeloRepository = new ModeloRepository($this->modelo);
+        if($request->has('atributos_marca')) {
+            $atributos_marca = 'marca:id,'.$request->atributos_marca;
+            $modeloRepository->selectAtributosRelacionados($atributos_marca);
+        }else{
+            $modeloRepository->selectAtributosRelacionados('marca');
+        }
+
+        if($request->has('filtro')){
+            $modeloRepository->filtro($request->filtro);
+        }
+
+        if($request->has('atributos')) {
+            $modeloRepository->selectAtributos($request->atributos);
+        }
+        return response()->json($modeloRepository->getResultado(), 200); //HTTP 200
+
+        //Lógica sem usar o repository abaixo.
         $atributos = $request->get('atributos') ? $request->get('atributos') : false; //Eu sei que esta definido abaixo, dentro do if.
         $atributos_marca = $request->get('atributos_marca') ? $request->get('atributos_marca') : false; //Eu sei que esta definido abaixo, dentro do if.
         //http://127.0.0.1:8000/api/modelo?atributos=id,nome,imagem,marca_id&atributos_marca=nome&filtro=nome:=:%M% //Vai trazer todos os regitros que tem 'M', nao importa o lado.

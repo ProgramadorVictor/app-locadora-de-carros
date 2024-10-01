@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Marca;
+use App\Repositories\MarcaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
@@ -24,13 +25,53 @@ class MarcaController extends Controller
      * @return \Illuminate\Http\JsonResponse;
      * Esse documento ou tipo de comentário se chama 'DocBlock' bem útil, em várias contem ele.
      */
-    public function index(): JsonResponse
+    protected $marca;
+    public function __construct(Marca $marca){
+        $this->marca = $marca;
+    }
+    public function index(Request $request): JsonResponse
     {
         /**
-         * Retornandos todos os registros de marca e retornando uma collection.
-         * Fazendo requisição com verbo GET, pois é o verbo da index.
+         * Design Pattern são padrões de projetos que fazemos para melhora varios aspectos como Legibilidade do Código, Manutenção de Código, entre outras
          */
-        return response()->json(Marca::with('modelos')->get(), 200); //HTTP 200
+        // http://127.0.0.1:8000/api/marca?atributos=id,nome,imagem&atributos_modelos=id,marca_id,nome,imagem&filtro=nome:like:%C%
+        $marcaRepository = new MarcaRepository($this->marca);
+
+        if($request->has('atributos_modelos')) {
+            $atributos_modelos = 'modelos:marca_id,'.$request->atributos_modelos;
+            $marcaRepository->selectAtributosRelacionados($atributos_modelos);
+        }else{
+            $marcaRepository->selectAtributosRelacionados('modelos');
+        }
+
+        if($request->has('filtro')){
+            $marcaRepository->filtro($request->filtro);
+        }
+
+        if($request->has('atributos')) {
+            $marcaRepository->selectAtributos($request->atributos);
+        }
+        return response()->json($marcaRepository->getResultado(), 200); //HTTP 200
+        //Acima um exemplo de Design Pattern Repository
+
+        //Abaixo é outra logica sem MarcaRepository
+        $marcas = Marca::with('modelos');
+        if($request->has('atributos_modelos')) {
+            $atributos_modelos = $request->atributos_modelos;
+            $marcas->with('modelos:marca_id,'.$atributos_modelos);
+        }
+        if($request->has('filtro')) {
+            $filtros = explode(';', $request->filtro);
+            foreach($filtros as $key => $condicao) {
+                $c = explode(':', $condicao);
+                $marcas->where($c[0], $c[1], $c[2]);
+            }
+        }
+        if($request->has('atributos')) {
+            $atributos = $request->atributos;
+            $marcas->selectRaw($atributos);
+        }
+        return response()->json($marcas->get(), 200); //HTTP 200
     }
 
     public function store(Request $request): JsonResponse
