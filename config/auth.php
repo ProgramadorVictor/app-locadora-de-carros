@@ -42,7 +42,7 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
+            'driver' => 'jwt', //Token vai ser realizado por meio de um token jwt
             'provider' => 'users',
             'hash' => false,
         ],
