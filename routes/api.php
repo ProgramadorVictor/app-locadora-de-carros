@@ -27,11 +27,14 @@ Route::get('/', function () {
  * apiResource métodos: index, store, show, update, destroy.
  */
 // Route::resource('/cliente', ClienteController::class);
-Route::apiResource('/cliente', ClienteController::class);
-Route::apiResource('/carro', CarroController::class);
-Route::apiResource('/locacao', LocacaoController::class);
-Route::apiResource('/marca', MarcaController::class);
-Route::apiResource('/modelo', ModeloController::class);
+Route::prefix('v1')->middleware('jwt')->group(function(){ //Fazendo o versionamento da api, implementando o middleware.
+    //O token deve ser passado no cabeçalho 'Authorization' o valor tem que ser 'Bearer $token'
+    Route::apiResource('/cliente', ClienteController::class);
+    Route::apiResource('/carro', CarroController::class);
+    Route::apiResource('/locacao', LocacaoController::class);
+    Route::apiResource('/marca', MarcaController::class);
+    Route::apiResource('/modelo', ModeloController::class);
+});
 /**
  * Um detalhe importante!: Ao solicitar a requisição API, deve ter os códigos HTTP que corresponde ao status HTTP, é mais semantico
  * Requisições realizadas que retornam algum tipo de problema ao esta faltando dado, lado do cliente deve ter no cabeçalho da Requisição API, o atributo 'Accept' com o value da solicitação do tipo de arquivo. Ex: application/json
