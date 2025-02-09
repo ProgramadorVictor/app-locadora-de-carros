@@ -6,8 +6,7 @@
                 <div class="card">
                     <div class="card-header">Login</div>
                     <div class="card-body">
-                        <form method="POST" action="">
-                            
+                        <form method="POST" action="" @submit.prevent="login($event)">
                             <div class="form-group row">
                                 <label for="email" class="col-md-4 col-form-label text-md-right">Props do Vue</label>
 
@@ -27,7 +26,7 @@
                                 <label for="email" class="col-md-4 col-form-label text-md-right">Endereço de e-mail</label>
 
                                 <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control" name="email" value="" required autocomplete="email" autofocus>
+                                    <input id="email" type="email" class="form-control" name="email" value="" required autocomplete="email" autofocus v-model="email">
 
                                 </div>
                             </div>
@@ -36,7 +35,7 @@
                                 <label for="password" class="col-md-4 col-form-label text-md-right">Senha</label>
 
                                 <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" name="password" required autocomplete="current-password">
+                                    <input id="password" type="password" class="form-control" name="password" required autocomplete="current-password" v-model="password">
                                 </div>
                             </div>
 
@@ -93,6 +92,35 @@
                 type: String,
                 required: true
             },
+        },
+        data(){
+            return {
+                email: '',
+                password: ''
+            }
+        },
+        methods: {
+            login(e){
+                let url = 'http://127.0.0.1:8000/api/login'
+                let configs = {
+                    method: 'post',
+                    body: new URLSearchParams({
+                        email: this.email,
+                        password: this.password
+                    })
+                }
+                fetch(url, configs)
+                    .then(response => response.json())
+                    .then(data => {
+                        
+                        if(data.token){
+                            document.cookie = 'token=' + data.token +';SameSite=Lax'
+                            //Automaticamente o laravel reconhece o 'token=' entender que o token é de autorização. Nativamente ele vai ser reconhecido pelo Laravel
+                        }
+                        e.target.submit(); //Colocando aqui dentro pois espera a conclusão dos then para disparar o evento.
+                    })
+                // e.target.submit(); //Disparando o evento, pode ocorrer problema pois, o fetch é assincrono
+            }
         },
         // props: ['nome','uid', 'idade'], //Uma forma mais simples sem a validação.
         mounted() {
