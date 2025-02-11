@@ -1,0 +1,26 @@
+<template>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Bem-vindo</div>
+
+                    <div class="card-body">
+                        <p>Apresentar indicadores do sistema.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<!-- 
+    IMPORTANTE: Para usamos os componentes Vue.js, temos que colocar aqui em resources/js/app.js, para que fiquem disponivel no contexto do blade.
+    Assim podemos usar o Vue.js juntamente com o motor de visualização do Laravel.
+-->
+<script>
+    export default {
+        mounted() {
+            console.log('Component mounted.')
+        }
+    }
+</script>
