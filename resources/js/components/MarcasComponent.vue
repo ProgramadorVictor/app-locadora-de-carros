@@ -2,9 +2,8 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card mb-1">
-                    <div class="card-header">Buscar de marcas</div>
-                    <div class="card-body">
+                <card-component titulo="Buscar de marcas">
+                    <template #conteudo>
                         <div class="form-row">
                             <div class="col mb-3">
                                 <!-- A utilização do ífen '-' faz com que seja reconhecida a camelCase no vue.js id-help == idHelp -->
@@ -18,20 +17,19 @@
                                 </input-container-component>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-footer">
+                    </template>]
+                    <template #rodape>
                         <button type="submit" class="btn btn-primary btn-sm float-right">Pesquisar</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">Relação de marcas</div>
-                    <div class="card-body">
+                    </template>
+                </card-component>
+                <card-component titulo="Relação de marcas">
+                    <template #conteudo>
                         <table-component></table-component>
-                    </div>
-                    <div class="card-footer">
+                    </template>
+                    <template #rodape>
                         <button type="submit" class="btn btn-primary btn-sm float-right">Adicionar</button>
-                    </div>
-                </div>
+                    </template>
+                </card-component>
             </div>
         </div>
     </div>
