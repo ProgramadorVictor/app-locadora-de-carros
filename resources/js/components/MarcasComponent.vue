@@ -27,11 +27,12 @@
                         <table-component></table-component>
                     </template>
                     <template #rodape>
-                        <button type="submit" class="btn btn-primary btn-sm float-right">Adicionar</button>
+                        <button type="submit" class="btn btn-primary btn-sm float-right" data-toggle="modal" data-target="#modalMarca">Adicionar</button>
                     </template>
                 </card-component>
             </div>
         </div>
+        <modal-component id="modalMarca" titulo="Adicionar marca"></modal-component>
     </div>
 </template>
 <!-- 
