@@ -32,17 +32,63 @@
                 </card-component>
             </div>
         </div>
-        <modal-component id="modalMarca" titulo="Adicionar marca"></modal-component>
+        <modal-component id="modalMarca" titulo="Adicionar marca">
+            <template #conteudo>
+                <div class="form-group">
+                    <input-container-component titulo="Nome da marca" id="novoNome" id-help="novoNomeHelp" texto-ajuda="Usuário, informar o nome da marca">
+                        <input type="text" class="form-control" id="inputNome" aria-describedby="novoNomeHelp" placeholder="Nome da marca" v-model="nomeMarca">
+                    </input-container-component>
+                    {{ nomeMarca }}
+                </div>
+                <div class="form-group">
+                    <input-container-component titulo="Imagem" id="novoImagem" id-help="novoImagemHelp" texto-ajuda="Selecione, uma imagem no formato .png">
+                        <input type="file" class="form-control-file" id="inputNome" aria-describedby="novoImagemHelp" placeholder="Selecione uma imagem" @change="carregarImagem($event)">
+                    </input-container-component>
+                    {{ arquivoImagem }}
+                </div>
+            </template>
+            <template #rodape>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" @click="salvar()">Salvar</button>
+            </template>
+        </modal-component>
     </div>
 </template>
-<!-- 
-    IMPORTANTE: Para usamos os componentes Vue.js, temos que colocar aqui em resources/js/app.js, para que fiquem disponivel no contexto do blade.
-    Assim podemos usar o Vue.js juntamente com o motor de visualização do Laravel.
--->
 <script>
     export default {
-        mounted() {
-            console.log('Component mounted.')
+        data(){
+            return{
+                urlBase: 'http://localhost:8000/api/v1/marca',
+                nomeMarca: '',
+                arquivoImagem: [],
+            }
+        },
+        methods:{
+            carregarImagem(e){
+                this.arquivoImagem = e.target.files; 
+            },
+            salvar(){
+                console.log(this.nomeMarca, this.arquivoImagem);
+
+                let formData = new FormData(); //Js programando um form.
+                formData.append('nome', this.nomeMarca);
+                formData.append('imagem', this.arquivoImagem[0]);
+
+                let config = {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'Accept': 'application/json'
+                    }
+                }
+
+                axios.post(this.urlBase, formData, config)
+                    .then(response => {
+                        console.log(response);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+            }
         }
     }
 </script>
