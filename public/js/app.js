@@ -2404,6 +2404,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  computed: {
+    token: function token() {
+      var token = document.cookie.split(';')[1];
+      token = token.split('=')[1];
+      token = 'Bearer ' + token;
+      return token;
+    }
+  },
   data: function data() {
     return {
       urlBase: 'http://localhost:8000/api/v1/marca',
@@ -2416,14 +2424,14 @@ __webpack_require__.r(__webpack_exports__);
       this.arquivoImagem = e.target.files;
     },
     salvar: function salvar() {
-      console.log(this.nomeMarca, this.arquivoImagem);
       var formData = new FormData(); //Js programando um form.
       formData.append('nome', this.nomeMarca);
       formData.append('imagem', this.arquivoImagem[0]);
       var config = {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'Authorization': this.token
         }
       };
       axios.post(this.urlBase, formData, config).then(function (response) {

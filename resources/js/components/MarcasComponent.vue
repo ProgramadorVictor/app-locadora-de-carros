@@ -56,6 +56,14 @@
 </template>
 <script>
     export default {
+        computed: {
+            token(){
+                let token = document.cookie.split(';')[1];
+                token = token.split('=')[1]
+                token = 'Bearer ' + token;
+                return token
+            }
+        },
         data(){
             return{
                 urlBase: 'http://localhost:8000/api/v1/marca',
@@ -68,7 +76,6 @@
                 this.arquivoImagem = e.target.files; 
             },
             salvar(){
-                console.log(this.nomeMarca, this.arquivoImagem);
 
                 let formData = new FormData(); //Js programando um form.
                 formData.append('nome', this.nomeMarca);
@@ -77,7 +84,8 @@
                 let config = {
                     headers: {
                         'Content-Type': 'multipart/form-data',
-                        'Accept': 'application/json'
+                        'Accept': 'application/json',
+                        'Authorization': this.token
                     }
                 }
 
