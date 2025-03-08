@@ -1,7 +1,14 @@
 <template>
     <!-- <div :class="`alert alert-${tipo}`" role="alert"> -->
     <div :class="estilo" role="alert">
-        A simple success alert—check it out!
+        {{ titulo }}
+        <hr>
+        <!-- {{ detalhes.data.message }} -->
+        <!-- <span v-if="detalhes.data.message">{{ detalhes.data.message }}</span> -->
+        <span v-if="detalhes.data.id">{{ 'O registro foi cadastro. ID: ' + detalhes.data.id }}</span>
+        <ul v-if="detalhes.data.errors">
+            <li v-for="error, key in detalhes.data.errors" :key="key">{{ error[0] }}</li>
+        </ul>
     </div>
 </template>
 <!-- 
@@ -11,7 +18,9 @@
 <script>
     export default {
         props:{
-            tipo: String
+            tipo: String,
+            titulo: String,
+            detalhes: Array,
         },
         mounted() {
             console.log('Component mounted.')
