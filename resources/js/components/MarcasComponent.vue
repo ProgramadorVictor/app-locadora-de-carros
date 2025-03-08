@@ -33,6 +33,10 @@
             </div>
         </div>
         <modal-component id="modalMarca" titulo="Adicionar marca">
+            <template #alertas>
+                <alert-component tipo="danger"></alert-component>
+                <alert-component tipo="success"></alert-component>
+            </template>
             <template #conteudo>
                 <div class="form-group">
                     <input-container-component titulo="Nome da marca" id="novoNome" id-help="novoNomeHelp" texto-ajuda="Usuário, informar o nome da marca">
